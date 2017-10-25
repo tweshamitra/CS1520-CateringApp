@@ -1,16 +1,24 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block body %}
+<div>
+    <h1>Events Currently Scheduled:</h1>
+    {% for event in events %}
+        {{ event.title }}<br/>
+    {% else %}
+        No events scheduled</br/>
+    {% endfor %}
+</div>
+<div>
+    <h1>Create New Staff Acount Here:</h1>
+    <form action = "" method="post">
+        Username:
+        <input type="text" name="username">
+        <br/>
+        <br/> Password:
+        <input type="text" name="password">
+        <br/>
+        <br/>
+        <input type="submit" value="Submit">
+    </form></div>
 
-<head>
-    <title>
-        Owner
-    </title>
-</head>
-
-<body>
-    <h1>Hello</h1>
-    
-
-</body>
-
-</html>
+{% endblock %}

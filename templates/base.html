@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<div>
+    {% if not session.logged_in %}
+        <a href = "{{ url_for('login') }}"></a>
+    {% else %}
+        <a href = "{{ url_for('logout') }}">Log Out</a>
+    {% endif %}
+    {% block body %}{% endblock %} 
+</div>

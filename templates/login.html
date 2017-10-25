@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>So You Think You Can Cater</title>
-</head>
-
-<body>
-    <form action="" method="post">
+{% extends "base.html" %}
+{% block body %}
+    <form action="{{ url_for('login') }}" method="post">
         <h1>Existing User Login</h1>
-        <!-- Role:   <input type = "button" value = "Owner"/><input type = "button" value = "Staff"><br/><br/> -->
-        Role:
+        Role (owner, customer, or staff):
         <input type="text" name="role" />
         <br/>
         <br/> Username:
@@ -21,7 +14,7 @@
         <br/>
         <input type="submit" value="Submit">
     </form>
-    <form method="post">
+    <form action = "{{ url_for('customer') }}" method="post">
         <h1>New Customer Registration</h1>
         Username:
         <input type="text" name="username">
@@ -30,8 +23,6 @@
         <input type="text" name="password">
         <br/>
         <br/>
-        <input type="button" value="Submit">
+        <input type="submit" value="Submit">
     </form>
-</body>
-
-</html>
+{% endblock %}
