@@ -36,7 +36,7 @@ class Staff(db.Model):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80), unique=True)
     events = db.relationship("Event", backref = "staff", lazy = "dynamic")
-    #event_signed_up = db.relationship('Event', backref='staff', lazy ='dynamic')
+    # event_signed_up = db.relationship('Event', backref='staff', lazy ='dynamic')
     # event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     # events = db.relationship('Event', secondary=catering_events, backref=db.backref('staffID'), lazy = 'dynamic')
 
@@ -67,14 +67,11 @@ def initdb_command():
     s1 = Staff(username = "twesha", password = "mitra" )
     s2 = Staff(username = "jane", password = "password")
     s3 = Staff(username = "jack", password = "hello")
-    db.session.add(Event(title ="lunch", owner = o, staff = s1))
-    db.session.add(Event(title = "wedding", owner = o, staff = s2))
-    db.session.add(Event(title = "funeral", owner = o, staff = s1))
-    db.session.add(Event(title = "birthday", owner = o))
+    db.session.add(Event(title ="Lunch", owner = o, staff = s1))
+    db.session.add(Event(title = "Wedding", owner = o, staff = s2))
+    db.session.add(Event(title = "Funeral", owner = o, staff = s1))
+    db.session.add(Event(title = "Birthday", owner = o, staff = s3))
     print(o.events)
-    # db.session.add(s1)
-    # db.session.add(s2)
-    # db.session.add(s3)
     db.session.commit()
     print("Initialized the database")
 
@@ -100,7 +97,7 @@ def login():
                 print("no profile found. Ask owner to create a profile for you")      
         elif request.form["role"] == "customer":
             if Customer.query.filter_by(username = request.form["user"], password = request.form["pass"]).first() != None:
-                print("profile found")
+                return redirect(url_for("customer"))
             else:
                 print("No profile found. register new account below")
     return render_template("login.html")
@@ -108,16 +105,18 @@ def login():
 @app.route('/logout/')
 def logout():
     session.pop('logged_in', None)
+    session['logged_in'] = False
     return redirect(url_for('login'))     
 
 @app.route("/owner", methods = ["GET", "POST"])
 def owner():
     events = Event.query.all()
+    staff_members = Staff.query.all()
     if request.method == 'POST':
         s = Staff(username = request.form["username"], password = request.form["password"])
         db.session.add(s)
         db.session.commit()
-    return render_template("owner.html", events = events)
+    return render_template("owner.html", events = events, staff_members = staff_members)
 
     
 @app.route("/customer", methods = ["GET", "POST"])
@@ -126,13 +125,18 @@ def customer():
         c = Customer(username = request.form["username"], password = request.form["password"])
         db.session.add(c)
         db.session.commit()
-        session['logged_in'] = True
-        # print("added customer")
-        return render_template("customer.html")
-    return redirect(url_for("login"))
+    session['logged_in'] = True 
+    return render_template("customer.html")
 
-# @app.route("/customer", method = ["GET", "POST"])
-# def request_event():    
+@app.route("/add", methods = ['POST'])
+def create_event():
+    if request.method == "POST":
+        e = Event(title = request.form["event_title"])
+        db.session.add(e)
+        db.session.commit()
+        flash('event request created')
+    return redirect(url_for('customer'))
+
 
 
 if __name__ == '__main__':

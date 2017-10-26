@@ -7,7 +7,14 @@
     {% else %}
         No events scheduled</br/>
     {% endfor %}
+    <h1>Staff Currently Scheduled:</h1>
+    {% for staff in staff_members %}
+        {{ staff.username }}<br/>
+    {% else %}
+        No staff scheduled</br/>
+    {% endfor %}
 </div>
+
 <div>
     <h1>Create New Staff Acount Here:</h1>
     <form action = "" method="post">

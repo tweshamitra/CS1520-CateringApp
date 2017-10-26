@@ -5,5 +5,10 @@
     {% else %}
         <a href = "{{ url_for('logout') }}">Log Out</a>
     {% endif %}
+    {% for message in get_flashed_messages() %}
+        <div>
+            {{ message }}
+        </div>
+    {% endfor %}
     {% block body %}{% endblock %} 
 </div>
