@@ -16,16 +16,7 @@
 </div>
 
 <div>
-    <h1>Create New Staff Acount Here:</h1>
-    <form action = "" method="post">
-        Username:
-        <input type="text" name="username">
-        <br/>
-        <br/> Password:
-        <input type="text" name="password">
-        <br/>
-        <br/>
-        <input type="submit" value="Submit">
-    </form></div>
-
+    <h1>Create new staff account 
+        <a href= "{{ url_for('create_staff') }}" action= "{{ url_for('create_staff') }}" method = "POST">here</a>:</h1>
+</div>
 {% endblock %}
