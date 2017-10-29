@@ -2,11 +2,11 @@
 {% block body %}
 <div>
     <h1>Events you are signed up for:</h1>
-        {% for e in staff.events %}
+        {% for e in events_signedup %}
             <h3>-{{e.title}} ({{e.date}})</h3>
         {% endfor %}
     <h1>Events you can sign up for:</h1>
-        {% for e in events %}
+        {% for e in events_available %}
         <input type = "radio">  {{e.title}} ({{e.date}})<br/>
         {% endfor %}<br/>
         <input type = "submit" value = "Submit">

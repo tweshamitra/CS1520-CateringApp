@@ -101,7 +101,14 @@ def login():
 def staff(username = None):
     staff = Staff.query.filter_by(username = username).first()
     events = Event.query.all()
-    return render_template("staff.html", staff=staff, events = events)
+    events_signedup = []
+    events_available = []
+    for event in events:
+        if event in staff.events:
+            events_signedup.append(event)
+        else:
+            events_available.append(event)
+    return render_template("staff.html", staff=staff, events_signedup = events_signedup, events_available =events_available)
 
 @app.route('/new_customer', methods = ["GET", "POST"])
 def create_customer():
