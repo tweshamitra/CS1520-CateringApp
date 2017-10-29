@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 {% block body %}
 <h1>Your requested events</h1>
-<h1>To request a new event, click <a href = "{{ url_for('request_event') }}"
-    action = "{{ url_for('request_event') }}" method = "POST">here</a></h1>
+<ul>
+{% for event in events %}
+   <li>{{event.title}} ({{event.date}})</li>
+   <!-- To cancel this event, click <a action = "{{ url_for('cancel_event', event = event) }}" href = "{{ url_for('cancel_event') }}" method = "POST">here</a> -->
+{% endfor %}
+</ul>
+<h1>Request new event below:</h1><br/>
+
+<form method="POST">
+    Event title:
+    <input type="text" name="event_title">
+    <br/><br/>
+    Date of Event:    
+    <input type = "date" name = "event_date"><br/><br/>
+    <input type="submit" value="Submit">
+</form>
+<h2>To cancel an event, click <a action = "{{url_for('cancel_event') }}" href="{{url_for('cancel_event') }}">here.</a></h2>
 {% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Fill out the following form to cancel an event:</h1>
+<form method = "POST">
+    Name of event to cancel: <input type = "text" name ="title"><br/><br/>
+    Date of the event: <input type = "date" name = "date"><br/><br/>
+    <input type = "submit" value ="Submit">
+</form>
+{% endblock %}
