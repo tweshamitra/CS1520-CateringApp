@@ -7,7 +7,8 @@
         {% endfor %}
     <h1>Events you can sign up for:</h1>
         {% for e in events %}
-            <h3>-{{e.title}} ({{e.date}})</h3>
-        {% endfor %}
+        <input type = "radio">  {{e.title}} ({{e.date}})<br/>
+        {% endfor %}<br/>
+        <input type = "submit" value = "Submit">
 </div>
 {% endblock %}

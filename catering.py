@@ -26,7 +26,7 @@ class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique = True)
     password = db.Column(db.String(80), unique = True)
-    event_requested = db.Column(db.Integer, db.ForeignKey('event.id'))
+    events = db.relationship('Event', backref = 'customer', lazy = 'dynamic')
 
     def __repr__(self):
         return "<Customer {}>".format(repr(self.username))
@@ -36,7 +36,7 @@ class Staff(db.Model):
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80), unique=True)
     staffs = db.relationship('Event', secondary = staff_members, backref= db.backref('staffMembers', lazy = 'dynamic'))
-    # event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
+
     def __repr__(self):
         return "<Staff {}>".format(repr(self.username))
 
@@ -45,8 +45,7 @@ class Event(db.Model):
     id=db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(80))
     date = db.Column(db.Date())
-    customer_id = db.relationship("Customer", backref = "event", lazy = "dynamic")
-    #staff = db.relationship("Staff", backref = "event", lazy = "dynamic")
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'))
     events = db.relationship('Staff', secondary = staff_members, backref = db.backref('events', lazy = 'dynamic'))
     def __repr__(self):
         return "<Event {}>".format(repr(self.title))
@@ -69,10 +68,6 @@ def initdb_command():
     s1 = Staff(username = "twesha", password = "mitra")
     s2 = Staff(username = "jane", password = "doe")
     s3 = Staff(username = "jack", password = "hello")
-    # s1.events.append(e1)
-    # s1.events.append(e2)
-    # s2.events.append(e2)
-    # s3.events.append(e3)
     e1.staffMembers.append(s1)
     e2.staffMembers.append(s1)
     e2.staffMembers.append(s2)
@@ -131,25 +126,38 @@ def owner():
 
     
 @app.route("/customer/<username>", methods = ["GET", "POST"])
+@app.route("/customer/", methods = ["GET", "POST"])
 def customer(username = None):
+    user = username
+    c = Customer.query.filter_by(username = user).first()
+    events = Event.query.filter_by(customer_id = c.id).all()
     if request.method == "POST":
-        c = Customer(username = request.form["username"], password = request.form["password"])
-        db.session.add(c)
-        db.session.commit()
-    session['logged_in'] = True 
-    return render_template("customer.html")
-    
-@app.route("/request-event", methods = ["GET", "POST"])
-def request_event():
-    if request.method == "POST":
+        user = username
         curr_date = request.form['event_date']
         year,month,day = curr_date.split('-')
         event_date = date(int(year),int(month),int(day))
-        e = Event(title = request.form["event_title"], date = event_date)
-        db.session.add(e)
+        if Event.query.filter_by(date = event_date).first() != None:
+            e = Event(title = request.form["event_title"], date = event_date, customer = c)
+            db.session.add(e)
+            db.session.commit()
+            flash('Event request created')
+        else :
+            flash('We are booked that day, sorry!')
+    session['logged_in'] = True 
+    return render_template("customer.html", username = user, events = events)
+
+@app.route('/cancel-event', methods = ["GET", "POST"])
+def cancel_event():
+    if request.method == "POST":
+        event_title = request.form ["title"]
+        curr_date = request.form["date"]
+        year,month,day = curr_date.split('-')
+        event_date = date(int(year),int(month),int(day))
+        db.session.delete(Event.query.filter_by(title = event_title, date = event_date).first())
         db.session.commit()
-        flash('event request created')
-    return render_template("request.html")
+        flash("Event cancelled")
+        session['logged_in'] = True
+    return render_template("cancel_event.html")    
 
 @app.route('/create-staff', methods = ["GET", "POST"])
 def create_staff():
