@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Request new event below:</h1><br/>
+<form method="POST">
+    Event title:
+    <input type="text" name="event_title">
+    <br/><br/>
+    Date of Event:    
+    <input type = "date" name = "event_date"><br/><br/>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}

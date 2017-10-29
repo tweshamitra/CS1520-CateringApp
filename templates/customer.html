@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-<h1>Event Request Form: </h1>
-<form action = "{{ url_for('create_event') }}"  method = "post">
-    Event title:    
-    <input type = "text" name = "event_title"><br/><br/>
-    <input type = "submit" value = "Submit">
-</form>
+<h1>Your requested events</h1>
+<h1>To request a new event, click <a href = "{{ url_for('request_event') }}"
+    action = "{{ url_for('request_event') }}" method = "POST">here</a></h1>
 {% endblock %}

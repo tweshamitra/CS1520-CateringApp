@@ -2,6 +2,12 @@
 {% block body %}
 <div>
     <h1>Events you are signed up for:</h1>
+        {% for e in staff.events %}
+            <h3>-{{e.title}} ({{e.date}})</h3>
+        {% endfor %}
     <h1>Events you can sign up for:</h1>
-    
+        {% for e in events %}
+            <h3>-{{e.title}} ({{e.date}})</h3>
+        {% endfor %}
 </div>
+{% endblock %}

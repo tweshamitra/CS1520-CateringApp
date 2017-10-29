@@ -3,20 +3,18 @@
 <div>
     <h1>Events Currently Scheduled:</h1>
     {% for event in events %}
-        {{ event.title }}<br/>
+        {{ event.title }} ({{ event.date}}):<br/>
+        -Staff working the event:<br/>
+        {% for staff in event.staffMembers %}
+            {{ staff.username}}<br/>
+        {% endfor %}<br/>
     {% else %}
         No events scheduled</br/>
-    {% endfor %}
-    <h1>Staff Currently Scheduled:</h1>
-    {% for staff in staff_members %}
-        {{ staff.username }}<br/>
-    {% else %}
-        No staff scheduled</br/>
     {% endfor %}
 </div>
 
 <div>
     <h1>Create new staff account 
-        <a href= "{{ url_for('create_staff') }}" action= "{{ url_for('create_staff') }}" method = "POST">here</a>:</h1>
+        <a href= "{{ url_for('create_staff') }}" action= "{{ url_for('create_staff') }}" method = "POST">here.</a></h1>
 </div>
 {% endblock %}
