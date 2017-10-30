@@ -9,3 +9,4 @@ How to run application:
 3. run "export FLASK_APP=catering.py"
 4. run "flask initdb"
 5. run "python catering.py"
+6. Navigate to localhost:5000

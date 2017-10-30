@@ -3,8 +3,8 @@
 <div>
     <h1>Events Currently Scheduled:</h1>
     {% for event in events %}
-        {{ event.title }} ({{ event.date}}):<br/>
-        -Staff working the event:<br/>
+        <h2>{{ event.title }} ({{ event.date}}):</h2>
+        <h3>Staff working the event:</h3>
         {% for staff in event.staffMembers %}
             {{ staff.username}}<br/>
         {% endfor %}<br/>

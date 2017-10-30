@@ -72,7 +72,6 @@ def initdb_command():
     e2.staffMembers.append(s1)
     e2.staffMembers.append(s2)
     e3.staffMembers.append(s3)
-   
     db.session.commit()
     print("Initialized the database")
 
@@ -97,7 +96,7 @@ def login():
             flash("No profile found! Register a new customer account below")
     return render_template("login.html")
 
-@app.route('/staff/<username>')
+@app.route('/staff/<username>', methods = ["GET", "POST"])
 def staff(username = None):
     staff = Staff.query.filter_by(username = username).first()
     events = Event.query.all()
@@ -108,6 +107,12 @@ def staff(username = None):
             events_signedup.append(event)
         else:
             events_available.append(event)
+    if request.method == "POST":
+        signup_event = request.form["event"]
+        event = Event.query.filter_by(title = signup_event).first()
+        event.staffMembers.append(staff)
+        db.session.commit()
+        flash("You have been assigned to the requested event. Reload page to see the event listed")
     return render_template("staff.html", staff=staff, events_signedup = events_signedup, events_available =events_available)
 
 @app.route('/new_customer', methods = ["GET", "POST"])

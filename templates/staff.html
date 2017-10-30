@@ -7,8 +7,10 @@
         {% endfor %}
     <h1>Events you can sign up for:</h1>
         {% for e in events_available %}
-        <input type = "radio">  {{e.title}} ({{e.date}})<br/>
+        <form action = "" method = "POST">
+        <input type = "radio" name ="event"value = "{{e.title}}">  {{e.title}} ({{e.date}})<br/>
         {% endfor %}<br/>
         <input type = "submit" value = "Submit">
+        </form>
 </div>
 {% endblock %}
